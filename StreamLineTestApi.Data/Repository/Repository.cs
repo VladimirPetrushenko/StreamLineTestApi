@@ -24,8 +24,8 @@ namespace StreamLineTestApi.Data.Repository
             return Task.CompletedTask;
         }
 
-        public IEnumerable<TEntity> GetAll() =>
-            _dbSet.AsNoTracking();
+        public Task<List<TEntity>> GetAll() =>
+            _dbSet.AsNoTracking().ToListAsync();
 
         public async Task<TEntity?> GetByID(int id) =>
             await _dbSet.FindAsync(id);

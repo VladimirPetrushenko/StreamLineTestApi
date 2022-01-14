@@ -7,5 +7,13 @@
         public List<QuestionsAnswer> Answers { get; set; }
         public QuestionsType Type { get; set; }
         public Test Test { get; set; }
+
+        public TestsQuestion()
+        {
+            Test = new Test();
+            Type = new QuestionsType();
+            Answers = new List<QuestionsAnswer>();
+            Question = string.Empty;
+        }
     }
 }

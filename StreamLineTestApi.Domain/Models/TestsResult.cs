@@ -6,5 +6,11 @@
         public User User { get; set; }
         public Test Test { get; set; }
         public double Result { get; set; }
+
+        public TestsResult()
+        {
+            User = new User();
+            Test = new Test();
+        }
     }
 }

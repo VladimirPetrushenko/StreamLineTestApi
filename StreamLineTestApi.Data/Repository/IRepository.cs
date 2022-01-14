@@ -6,7 +6,7 @@
 
         public Task DeleteItem(TEntity item);
 
-        public IEnumerable<TEntity> GetAll();
+        public Task<List<TEntity>> GetAll();
 
         public Task<TEntity?> GetByID(int id);
 

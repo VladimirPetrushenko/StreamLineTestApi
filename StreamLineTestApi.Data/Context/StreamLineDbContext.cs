@@ -34,11 +34,13 @@ namespace StreamLineTestApi.Data.Context
             builder.Property(u => u.Name).IsRequired().HasColumnType("nvarchar(30)");
             builder.Property(u => u.Email).IsRequired().HasColumnType("nvarchar(30)");
             builder.Property(u => u.Password).IsRequired().HasColumnType("nvarchar(30)");
+            builder.HasIndex(u => u.Name).IsUnique();
         }
 
         public void TestConfigure(EntityTypeBuilder<Test> builder)
         {
             builder.ToTable("Tests").HasKey(p => p.Id);
+            builder.Property(t => t.Name).IsRequired().HasColumnType("nvarchar(100)");
             builder.HasMany(t => t.Questions).WithOne(q => q.Test);
         }
 
