@@ -3,13 +3,13 @@ using StreamLineTestApi.Data.Context;
 
 namespace StreamLineTestApi.Data.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity>
+    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         where TEntity : class
     {
-        private readonly DbSet<TEntity> _dbSet;
-        private readonly StreamLineDbContext _context;
+        protected readonly DbSet<TEntity> _dbSet;
+        protected readonly StreamLineDbContext _context;
 
-        public Repository(StreamLineDbContext context)
+        public RepositoryBase(StreamLineDbContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
@@ -23,12 +23,6 @@ namespace StreamLineTestApi.Data.Repository
             _dbSet.Remove(item);
             return Task.CompletedTask;
         }
-
-        public Task<List<TEntity>> GetAll() =>
-            _dbSet.AsNoTracking().ToListAsync();
-
-        public async Task<TEntity?> GetByID(int id) =>
-            await _dbSet.FindAsync(id);
 
         public Task UpdateItem(TEntity item)
         {

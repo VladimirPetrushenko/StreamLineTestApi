@@ -6,8 +6,6 @@ using StreamLineTestApi.Domain.Models;
 
 namespace StreamLineTestApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class QuestionController : Controller
     {
         private readonly IRepository<TestsQuestion> _repository;

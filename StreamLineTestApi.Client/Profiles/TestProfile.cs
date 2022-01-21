@@ -9,6 +9,7 @@ namespace StreamLineTestApi.Client.Profiles
         public TestProfile()
         {
             CreateMap<TestCreateDto, Test>();
+            CreateMap<Test, TestReadDto>();
         }
     }
 }

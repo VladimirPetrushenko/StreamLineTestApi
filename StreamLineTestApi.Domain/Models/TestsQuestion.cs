@@ -11,7 +11,7 @@
         public TestsQuestion()
         {
             Test = new Test();
-            Type = new QuestionsType();
+            Type = QuestionsType.Single;
             Answers = new List<QuestionsAnswer>();
             Question = string.Empty;
         }

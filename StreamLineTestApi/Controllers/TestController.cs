@@ -22,12 +22,22 @@ namespace StreamLineTestApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TestCreateDto testCreateDto)
         {
-            var question = _mapper.Map<Test>(testCreateDto);
+            var test = _mapper.Map<Test>(testCreateDto);
 
-            await _repository.CreateItem(question);
+            await _repository.CreateItem(test);
             await _repository.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet("id")]
+        public async Task<IActionResult> Test(int Id)
+        {
+            var test = await _repository.GetByID(Id);
+
+            var testDto = _mapper.Map<TestReadDto>(test);
+
+            return Ok(testDto);
         }
     }
 }

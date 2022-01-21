@@ -1,14 +1,13 @@
 ﻿using StreamLineTestApi.Client.Models.Dto.Answer;
 using StreamLineTestApi.Domain.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace StreamLineTestApi.Client.Models.Dto.Question
 {
-    public class QuestionCreateDto
+    public class QuestionReadDto
     {
-        [Required]
+        public int Id { get; set; }
         public string Question { get; set; }
-        public List<AnswerCreateDto> Answers { get; set; }
+        public List<AnswerReadDto> Answers { get; set; }
         public QuestionsType Type { get; set; }
     }
 }

@@ -16,7 +16,6 @@ namespace StreamLineTestApi.Data.Context
         public DbSet<TestsQuestion> TestsQuestions { get; set; }
         public DbSet<QuestionsAnswer> TestsAnswers { get; set; }
         public DbSet<TestsResult> TestsResults { get; set; }
-        public DbSet<QuestionsType> QuestionsTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,7 +24,6 @@ namespace StreamLineTestApi.Data.Context
             modelBuilder.Entity<TestsQuestion>(TestsQuestionConfigure);
             modelBuilder.Entity<QuestionsAnswer>(QuestionsAnswerConfigure);
             modelBuilder.Entity<TestsResult>(TestsResultConfigure);
-            modelBuilder.Entity<QuestionsType>(QuestionsTypeConfigure);
         }
 
         public void UserConfigure(EntityTypeBuilder<User> builder)
@@ -49,7 +47,6 @@ namespace StreamLineTestApi.Data.Context
             builder.ToTable("TestsQuestions").HasKey(p => p.Id);
             builder.Property(q => q.Question).IsRequired().HasColumnType("nvarchar(1000)");
             builder.HasMany(q => q.Answers).WithOne(a => a.Question);
-            builder.HasOne(q => q.Type).WithMany(t => t.Questions);
         }
 
         public void QuestionsAnswerConfigure(EntityTypeBuilder<QuestionsAnswer> builder)
@@ -65,12 +62,6 @@ namespace StreamLineTestApi.Data.Context
             builder.Property(r => r.Result).IsRequired();
             builder.HasOne(r => r.User).WithMany(u => u.Results);
             builder.HasOne(r => r.Test).WithMany(t => t.Results);
-        }
-
-        public void QuestionsTypeConfigure(EntityTypeBuilder<QuestionsType> builder)
-        {
-            builder.ToTable("QuestionTypes").HasKey(p => p.Id);
-            builder.Property(a => a.Type).IsRequired().HasColumnType("nvarchar(10)");
         }
     }
 }

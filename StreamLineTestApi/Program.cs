@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StreamLineTestApi.Client.Profiles;
 using StreamLineTestApi.Data.Context;
 using StreamLineTestApi.Data.Repository;
 using StreamLineTestApi.Domain.Models;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,10 +41,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization();
 
-builder.Services.AddScoped<IRepository<User>, Repository<User>>();
-builder.Services.AddScoped<IRepository<TestsQuestion>, Repository<TestsQuestion>>();
+builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<IRepositoryBase<TestsQuestion>, RepositoryBase<TestsQuestion>>();
+builder.Services.AddScoped<IRepository<Test>, TestRepository>();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(AnswerProfile).GetTypeInfo().Assembly);
 builder.Services.AddCors();
 
 builder.Services.AddControllers();
