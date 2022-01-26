@@ -2,7 +2,7 @@
 
 namespace StreamLineTestApi.Client.Models.Dto.Answer
 {
-    public class AnswerCreateDto
+    public class AnswerUpdateDto
     {
         public string Answer { get; set; }
         [Required]

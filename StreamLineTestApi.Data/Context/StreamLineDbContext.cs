@@ -52,7 +52,7 @@ namespace StreamLineTestApi.Data.Context
         public void QuestionsAnswerConfigure(EntityTypeBuilder<QuestionsAnswer> builder)
         {
             builder.ToTable("QuestionsAnswers").HasKey(p => p.Id);
-            builder.Property(a => a.Answer).IsRequired().HasColumnType("nvarchar(1000)");
+            builder.Property(a => a.Answer).HasColumnType("nvarchar(1000)");
             builder.Property(a => a.IsRight).IsRequired().HasColumnType("bit");
         }
 

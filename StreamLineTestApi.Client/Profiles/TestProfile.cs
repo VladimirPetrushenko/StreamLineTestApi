@@ -9,7 +9,9 @@ namespace StreamLineTestApi.Client.Profiles
         public TestProfile()
         {
             CreateMap<TestCreateDto, Test>();
+            CreateMap<TestUpdateDto, Test>();
             CreateMap<Test, TestReadDto>();
+            CreateMap<Test, TestsReadDto>();
         }
     }
 }
