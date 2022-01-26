@@ -14,13 +14,12 @@ namespace StreamLineTestApi.Data.Repository
         public Task<List<Test>> GetAll() =>
             _dbSet.AsNoTracking().ToListAsync();
 
-        public async Task<Test?> GetByID(int id)
+        public Task<Test?> GetByID(int id)
         {
-            return await _context.Tests.Where(t => t.Id == id)
+            return _context.Tests.Where(t => t.Id == id)
                 .Include(t => t.Questions)
                 .ThenInclude(q => q.Answers)
                 .FirstOrDefaultAsync();
         }
-            
     }
 }

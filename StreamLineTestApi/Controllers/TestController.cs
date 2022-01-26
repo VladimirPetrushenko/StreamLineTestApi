@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using StreamLineTestApi.Client.CustomMappers;
+using StreamLineTestApi.Client.Models.Dto.Answer;
+using StreamLineTestApi.Client.Models.Dto.Question;
 using StreamLineTestApi.Client.Models.Dto.Test;
+using StreamLineTestApi.Client.Models.Interfaces;
 using StreamLineTestApi.Data.Repository;
 using StreamLineTestApi.Domain.Models;
 
@@ -11,12 +15,21 @@ namespace StreamLineTestApi.Controllers
     public class TestController : Controller
     {
         private readonly IRepository<Test> _repository;
+        private readonly IRepository<QuestionsAnswer> _questionsAnswerRepository;
+        private readonly IRepository<TestsQuestion> _testsQuestionRepository;
         private readonly IMapper _mapper;
 
-        public TestController(IRepository<Test> repository, IMapper mapper)
+        public TestController(
+            IRepository<Test> repository,
+            IMapper mapper,
+            IRepository<QuestionsAnswer> questionsAnswerRepository,
+            IRepository<TestsQuestion> testsQuestionRepository
+           )
         {
             _repository = repository;
             _mapper = mapper;
+            _questionsAnswerRepository = questionsAnswerRepository;
+            _testsQuestionRepository = testsQuestionRepository;
         }
 
         [HttpPost]
@@ -42,7 +55,7 @@ namespace StreamLineTestApi.Controllers
         {
             var test = await _repository.GetByID(testCheckResult.Id);
 
-            if(test == null)
+            if (test == null)
             {
                 return BadRequest();
             }
@@ -58,12 +71,12 @@ namespace StreamLineTestApi.Controllers
 
                 var rightAnswer = test.Questions[i].Answers.FirstOrDefault(a => a.IsRight);
 
-                if(rightAnswer == null)
+                if (rightAnswer == null)
                 {
                     continue;
                 }
 
-                if(rightAnswer.Answer.Contains(testCheckResult.Answers[i]))
+                if (rightAnswer.Answer.Contains(testCheckResult.Answers[i]))
                 {
                     result[i] = true;
                 }
@@ -76,17 +89,40 @@ namespace StreamLineTestApi.Controllers
         public async Task<IActionResult> Tests()
         {
             var tests = await _repository.GetAll();
-            var testsDto = _mapper.Map<List<TestsReadDto>>(tests);
+            var testsDto = _mapper.Map<List<TestReadNameAndIDDto>>(tests);
 
             return Ok(testsDto);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTest()
+        [HttpPut("update/id")]
+        public async Task<IActionResult> UpdateTest(int id, TestUpdateDto testUpdate)
         {
-            var test = await _repository.GetByID(1);
+            var test = await _repository.GetByID(id);
 
-            return Ok(test);
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+            var updateMapper = new UpdateTestToTestMapper
+            (
+                test,
+                testUpdate,
+                _mapper,
+                _questionsAnswerRepository,
+                _testsQuestionRepository
+            );
+
+            if (await updateMapper.MapAsync())
+            {
+                await _repository.SaveChanges();
+
+                var testDto = _mapper.Map<TestReadDto>(test);
+
+                return Ok(testDto);
+            }
+
+            return BadRequest();
         }
 
         [HttpGet("id")]
@@ -95,6 +131,16 @@ namespace StreamLineTestApi.Controllers
             var test = await _repository.GetByID(Id);
 
             var testDto = _mapper.Map<TestReadDto>(test);
+
+            return Ok(testDto);
+        }
+
+        [HttpGet("update/id")]
+        public async Task<IActionResult> UpdateTest(int Id)
+        {
+            var test = await _repository.GetByID(Id);
+
+            var testDto = _mapper.Map<TestUpdateReadDto>(test);
 
             return Ok(testDto);
         }

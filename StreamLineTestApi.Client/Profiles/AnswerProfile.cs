@@ -9,8 +9,11 @@ namespace StreamLineTestApi.Client.Profiles
         public AnswerProfile()
         {
             CreateMap<AnswerCreateDto, QuestionsAnswer>();
+
             CreateMap<AnswerUpdateDto, QuestionsAnswer>();
+
             CreateMap<QuestionsAnswer, AnswerReadDto>();
+            CreateMap<QuestionsAnswer, AnswerUpdateReadDto>();
         }
     }
 }

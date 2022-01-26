@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StreamLineTestApi.Data\StreamLineTestApi.Data.csproj" />
     <ProjectReference Include="..\StreamLineTestApi.Domain\StreamLineTestApi.Domain.csproj" />
   </ItemGroup>
 

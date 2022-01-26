@@ -1,12 +1,11 @@
 ﻿using StreamLineTestApi.Client.Models.Dto.Question;
-using System.ComponentModel.DataAnnotations;
 
 namespace StreamLineTestApi.Client.Models.Dto.Test
 {
-    public class TestUpdateDto
+    public class TestUpdateReadDto
     {
-        [Required]
+        public int Id { get; set; }
         public string Name { get; set; }
-        public List<QuestionUpdateDto> Questions { get; set; }
+        public List<QuestionUpdateReadDto> Questions { get; set; }
     }
 }

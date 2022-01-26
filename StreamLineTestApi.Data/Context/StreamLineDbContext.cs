@@ -14,7 +14,7 @@ namespace StreamLineTestApi.Data.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestsQuestion> TestsQuestions { get; set; }
-        public DbSet<QuestionsAnswer> TestsAnswers { get; set; }
+        public DbSet<QuestionsAnswer> QuestionsAnswers { get; set; }
         public DbSet<TestsResult> TestsResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
