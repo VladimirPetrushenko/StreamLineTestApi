@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StreamLineTestApi.Client.Models.Dto.Answer
 {
-    public class AnswerUpdateDto : IId
+    public class AnswerUpdateDto
     {
-        [Required]
-        public int Id { get; set; }
         public string Answer { get; set; }
         [Required]
         public bool IsRight { get; set; }

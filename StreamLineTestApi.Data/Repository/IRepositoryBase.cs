@@ -2,7 +2,7 @@
 {
     public interface IRepositoryBase<TEntity>
     {
-        public Task CreateItem(TEntity item);
+        public Task<TEntity> CreateItem(TEntity item);
 
         public Task DeleteItem(TEntity item);
 

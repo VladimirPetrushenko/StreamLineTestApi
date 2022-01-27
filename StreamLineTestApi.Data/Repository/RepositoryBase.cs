@@ -15,8 +15,11 @@ namespace StreamLineTestApi.Data.Repository
             _dbSet = context.Set<TEntity>();
         }
 
-        public async Task CreateItem(TEntity item) =>
-            await _dbSet.AddAsync(item);
+        public async Task<TEntity> CreateItem(TEntity item)
+        {
+            var model = await _dbSet.AddAsync(item);
+            return model.Entity;
+        }
 
         public Task DeleteItem(TEntity item)
         {

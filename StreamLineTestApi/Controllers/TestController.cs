@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using StreamLineTestApi.Client.CustomMappers;
-using StreamLineTestApi.Client.Models.Dto.Answer;
-using StreamLineTestApi.Client.Models.Dto.Question;
 using StreamLineTestApi.Client.Models.Dto.Test;
-using StreamLineTestApi.Client.Models.Interfaces;
 using StreamLineTestApi.Data.Repository;
 using StreamLineTestApi.Domain.Models;
 
@@ -15,21 +11,15 @@ namespace StreamLineTestApi.Controllers
     public class TestController : Controller
     {
         private readonly IRepository<Test> _repository;
-        private readonly IRepository<QuestionsAnswer> _questionsAnswerRepository;
-        private readonly IRepository<TestsQuestion> _testsQuestionRepository;
         private readonly IMapper _mapper;
 
         public TestController(
             IRepository<Test> repository,
-            IMapper mapper,
-            IRepository<QuestionsAnswer> questionsAnswerRepository,
-            IRepository<TestsQuestion> testsQuestionRepository
+            IMapper mapper
            )
         {
             _repository = repository;
             _mapper = mapper;
-            _questionsAnswerRepository = questionsAnswerRepository;
-            _testsQuestionRepository = testsQuestionRepository;
         }
 
         [HttpPost]
@@ -104,25 +94,13 @@ namespace StreamLineTestApi.Controllers
                 return NotFound();
             }
 
-            var updateMapper = new UpdateTestToTestMapper
-            (
-                test,
-                testUpdate,
-                _mapper,
-                _questionsAnswerRepository,
-                _testsQuestionRepository
-            );
+            _mapper.Map(testUpdate, test);
 
-            if (await updateMapper.MapAsync())
-            {
-                await _repository.SaveChanges();
+            await _repository.SaveChanges();
 
-                var testDto = _mapper.Map<TestReadDto>(test);
+            var testDto = _mapper.Map<TestReadDto>(test);
 
-                return Ok(testDto);
-            }
-
-            return BadRequest();
+            return Ok(testDto);
         }
 
         [HttpGet("id")]

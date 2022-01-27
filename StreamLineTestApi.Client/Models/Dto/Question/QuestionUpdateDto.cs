@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StreamLineTestApi.Client.Models.Dto.Question
 {
-    public class QuestionUpdateDto : IId
+    public class QuestionUpdateDto
     {
-        [Required]
-        public int Id { get; set; }
         [Required]
         public string Question { get; set; }
         public List<AnswerUpdateDto> Answers { get; set; }
