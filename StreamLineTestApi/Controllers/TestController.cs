@@ -59,6 +59,31 @@ namespace StreamLineTestApi.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("CreateWithConstructor")]
+        public async Task<IActionResult> CreateWithConstructor(TestCreateDto testCreateDto)
+        {
+            if (!testCreateDto.Questions.Any())
+            {
+                return BadRequest();
+            }
+
+            var test = new Test()
+            {
+                Name = testCreateDto.Name,
+            };
+
+            var testEntity = await _repository.CreateItem(test);
+            await _repository.SaveChanges();
+
+            test = await _repository.GetByID(testEntity.Id);
+
+            _mapper.Map(testCreateDto, test);
+            await _repository.SaveChanges();
+
+            return Ok();
+        }
+
         [HttpGet("update/id")]
         public async Task<IActionResult> UpdateTest(int Id)
         {
@@ -122,6 +147,22 @@ namespace StreamLineTestApi.Controllers
             }
 
             return Json(result);
+        }
+        
+        [HttpDelete("id")]
+        public async Task<IActionResult> Delete(TestDeleteDto testDeleteDto)
+        {
+            var test = await _repository.GetByID(testDeleteDto.Id);
+
+            if (test == null)
+            {
+                return BadRequest();
+            }
+
+            await _repository.DeleteItem(test);
+            await _repository.SaveChanges();
+            
+            return Ok();
         }
     }
 }

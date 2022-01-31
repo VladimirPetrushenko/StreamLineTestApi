@@ -38,5 +38,21 @@ namespace StreamLineTestApi.Controllers
 
             return Ok(questionsDto);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteQuestion(QuestionDeleteDto questionDeleteDto)
+        {
+            var question = await _repository.GetByID(questionDeleteDto.Id);
+            
+            if(question == null)
+            {
+                return BadRequest();
+            }
+
+            await _repository.DeleteItem(question);
+            await _repository.SaveChanges();
+
+            return Ok();
+        }
     }
 }
