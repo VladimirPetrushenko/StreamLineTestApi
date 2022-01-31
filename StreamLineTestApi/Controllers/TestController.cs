@@ -22,6 +22,26 @@ namespace StreamLineTestApi.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Tests()
+        {
+            var tests = await _repository.GetAll();
+            var testsDto = _mapper.Map<List<TestReadNameAndIDDto>>(tests);
+
+            return Ok(testsDto);
+        }
+
+
+        [HttpGet("id")]
+        public async Task<IActionResult> Test(int Id)
+        {
+            var test = await _repository.GetByID(Id);
+
+            var testDto = _mapper.Map<TestReadDto>(test);
+
+            return Ok(testDto);
+        }
+
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> Create(TestCreateDto testCreateDto)
@@ -37,6 +57,35 @@ namespace StreamLineTestApi.Controllers
             await _repository.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet("update/id")]
+        public async Task<IActionResult> UpdateTest(int Id)
+        {
+            var test = await _repository.GetByID(Id);
+
+            var testDto = _mapper.Map<TestUpdateReadDto>(test);
+
+            return Ok(testDto);
+        }
+
+        [HttpPut("update/id")]
+        public async Task<IActionResult> UpdateTest(int id, TestUpdateDto testUpdate)
+        {
+            var test = await _repository.GetByID(id);
+
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(testUpdate, test);
+
+            await _repository.SaveChanges();
+
+            var testDto = _mapper.Map<TestReadDto>(test);
+
+            return Ok(testDto);
         }
 
         [HttpPost]
@@ -66,61 +115,13 @@ namespace StreamLineTestApi.Controllers
                     continue;
                 }
 
-                if (rightAnswer.Answer.Contains(testCheckResult.Answers[i]))
+                if (rightAnswer.Value.Contains(testCheckResult.Answers[i]))
                 {
                     result[i] = true;
                 }
             }
 
             return Json(result);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Tests()
-        {
-            var tests = await _repository.GetAll();
-            var testsDto = _mapper.Map<List<TestReadNameAndIDDto>>(tests);
-
-            return Ok(testsDto);
-        }
-
-        [HttpPut("update/id")]
-        public async Task<IActionResult> UpdateTest(int id, TestUpdateDto testUpdate)
-        {
-            var test = await _repository.GetByID(id);
-
-            if (test == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(testUpdate, test);
-
-            await _repository.SaveChanges();
-
-            var testDto = _mapper.Map<TestReadDto>(test);
-
-            return Ok(testDto);
-        }
-
-        [HttpGet("id")]
-        public async Task<IActionResult> Test(int Id)
-        {
-            var test = await _repository.GetByID(Id);
-
-            var testDto = _mapper.Map<TestReadDto>(test);
-
-            return Ok(testDto);
-        }
-
-        [HttpGet("update/id")]
-        public async Task<IActionResult> UpdateTest(int Id)
-        {
-            var test = await _repository.GetByID(Id);
-
-            var testDto = _mapper.Map<TestUpdateReadDto>(test);
-
-            return Ok(testDto);
         }
     }
 }

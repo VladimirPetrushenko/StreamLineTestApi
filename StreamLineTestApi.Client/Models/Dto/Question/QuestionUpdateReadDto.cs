@@ -6,7 +6,7 @@ namespace StreamLineTestApi.Client.Models.Dto.Question
     public class QuestionUpdateReadDto
     {
         public int Id { get; set; }
-        public string Question { get; set; }
+        public string Value { get; set; }
         public List<AnswerUpdateReadDto> Answers { get; set; }
         public QuestionsType Type { get; set; }
     }

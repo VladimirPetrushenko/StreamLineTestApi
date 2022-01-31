@@ -13,7 +13,7 @@ namespace StreamLineTestApi.Data.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Test> Tests { get; set; }
-        public DbSet<TestsQuestion> TestsQuestions { get; set; }
+        public DbSet<Question> Questions { get; set; }
         public DbSet<QuestionsAnswer> QuestionsAnswers { get; set; }
         public DbSet<TestsResult> TestsResults { get; set; }
 
@@ -21,7 +21,7 @@ namespace StreamLineTestApi.Data.Context
         {
             modelBuilder.Entity<User>(UserConfigure);
             modelBuilder.Entity<Test>(TestConfigure);
-            modelBuilder.Entity<TestsQuestion>(TestsQuestionConfigure);
+            modelBuilder.Entity<Question>(QuestionConfigure);
             modelBuilder.Entity<QuestionsAnswer>(QuestionsAnswerConfigure);
             modelBuilder.Entity<TestsResult>(TestsResultConfigure);
         }
@@ -39,20 +39,20 @@ namespace StreamLineTestApi.Data.Context
         {
             builder.ToTable("Tests").HasKey(p => p.Id);
             builder.Property(t => t.Name).IsRequired().HasColumnType("nvarchar(100)");
-            builder.HasMany(t => t.Questions).WithOne(q => q.Test);
         }
 
-        public void TestsQuestionConfigure(EntityTypeBuilder<TestsQuestion> builder)
+        public void QuestionConfigure(EntityTypeBuilder<Question> builder)
         {
-            builder.ToTable("TestsQuestions").HasKey(p => p.Id);
-            builder.Property(q => q.Question).IsRequired().HasColumnType("nvarchar(1000)");
+            builder.ToTable("Questions").HasKey(p => p.Id);
+            builder.Property(q => q.Value).IsRequired().HasColumnType("nvarchar(1000)");
             builder.HasMany(q => q.Answers).WithOne(a => a.Question);
+            builder.HasMany(t => t.Tests).WithMany(q => q.Questions).UsingEntity(x => x.ToTable("Test_Question"));
         }
 
         public void QuestionsAnswerConfigure(EntityTypeBuilder<QuestionsAnswer> builder)
         {
             builder.ToTable("QuestionsAnswers").HasKey(p => p.Id);
-            builder.Property(a => a.Answer).HasColumnType("nvarchar(1000)");
+            builder.Property(a => a.Value).HasColumnType("nvarchar(1000)");
             builder.Property(a => a.IsRight).IsRequired().HasColumnType("bit");
         }
 

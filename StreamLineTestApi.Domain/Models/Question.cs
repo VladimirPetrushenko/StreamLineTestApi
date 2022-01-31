@@ -1,19 +1,19 @@
 ﻿namespace StreamLineTestApi.Domain.Models
 {
-    public class TestsQuestion
+    public class Question
     {
         public int Id { get; set; }
-        public string Question { get; set; }
+        public string Value { get; set; }
         public List<QuestionsAnswer> Answers { get; set; }
         public QuestionsType Type { get; set; }
-        public Test Test { get; set; }
+        public List<Test> Tests { get; set; }
 
-        public TestsQuestion()
+        public Question()
         {
-            Test = new Test();
+            Tests = new List<Test>();
             Type = QuestionsType.Single;
             Answers = new List<QuestionsAnswer>();
-            Question = string.Empty;
+            Value = string.Empty;
         }
     }
 }

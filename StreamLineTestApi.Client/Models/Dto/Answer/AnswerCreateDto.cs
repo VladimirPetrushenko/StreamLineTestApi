@@ -4,7 +4,7 @@ namespace StreamLineTestApi.Client.Models.Dto.Answer
 {
     public class AnswerCreateDto
     {
-        public string Answer { get; set; }
+        public string Value { get; set; }
         [Required]
         public bool IsRight { get; set; }
     }

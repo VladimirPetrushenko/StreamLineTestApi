@@ -6,12 +6,14 @@ using StreamLineTestApi.Domain.Models;
 
 namespace StreamLineTestApi.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class QuestionController : Controller
     {
-        private readonly IRepository<TestsQuestion> _repository;
+        private readonly IRepository<Question> _repository;
         private readonly IMapper _mapper;
 
-        public QuestionController(IRepository<TestsQuestion> repository, IMapper mapper)
+        public QuestionController(IRepository<Question> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -20,7 +22,7 @@ namespace StreamLineTestApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(QuestionCreateDto questionCreateDto)
         {
-            var question = _mapper.Map<TestsQuestion>(questionCreateDto);
+            var question = _mapper.Map<Question>(questionCreateDto);
 
             await _repository.CreateItem(question);
             await _repository.SaveChanges();
@@ -29,9 +31,12 @@ namespace StreamLineTestApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public async Task<IActionResult> Questions()
         {
-            return Ok();
+            var questions = await _repository.GetAll();
+            var questionsDto = _mapper.Map<List<QuestionReadDto>>(questions);
+
+            return Ok(questionsDto);
         }
     }
 }

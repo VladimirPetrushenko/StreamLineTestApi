@@ -43,7 +43,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Test>, TestRepository>();
-builder.Services.AddScoped<IRepository<TestsQuestion>, TestsQuestionRepository>();
+builder.Services.AddScoped<IRepository<Question>, QuestionRepository>();
 builder.Services.AddScoped<IRepository<QuestionsAnswer>, QuestionsAnswerRepository>();
 
 builder.Services.AddAutoMapper(typeof(AnswerProfile).GetTypeInfo().Assembly);

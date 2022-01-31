@@ -8,7 +8,7 @@ namespace StreamLineTestApi.Client.Models.Dto.Question
     public class QuestionUpdateDto
     {
         [Required]
-        public string Question { get; set; }
+        public string Value { get; set; }
         public List<AnswerUpdateDto> Answers { get; set; }
         public QuestionsType Type { get; set; }
     }

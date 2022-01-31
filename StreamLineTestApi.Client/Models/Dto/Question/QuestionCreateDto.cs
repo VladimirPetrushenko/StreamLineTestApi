@@ -7,7 +7,7 @@ namespace StreamLineTestApi.Client.Models.Dto.Question
     public class QuestionCreateDto
     {
         [Required]
-        public string Question { get; set; }
+        public string Value { get; set; }
         public List<AnswerCreateDto> Answers { get; set; }
         public QuestionsType Type { get; set; }
     }

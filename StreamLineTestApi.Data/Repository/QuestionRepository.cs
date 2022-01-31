@@ -4,19 +4,19 @@ using StreamLineTestApi.Domain.Models;
 
 namespace StreamLineTestApi.Data.Repository
 {
-    public class TestsQuestionRepository : RepositoryBase<TestsQuestion>, IRepository<TestsQuestion>
+    public class QuestionRepository : RepositoryBase<Question>, IRepository<Question>
     {
-        public TestsQuestionRepository(StreamLineDbContext context)
+        public QuestionRepository(StreamLineDbContext context)
             : base(context)
         {
         }
 
-        public Task<List<TestsQuestion>> GetAll() =>
+        public Task<List<Question>> GetAll() =>
             _dbSet.AsNoTracking().ToListAsync();
 
-        public Task<TestsQuestion?> GetByID(int id)
+        public Task<Question?> GetByID(int id)
         {
-            return _context.TestsQuestions.Where(t => t.Id == id)
+            return _context.Questions.Where(t => t.Id == id)
                 .Include(t => t.Answers)
                 .FirstOrDefaultAsync();
         }
