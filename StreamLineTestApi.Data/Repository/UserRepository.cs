@@ -13,9 +13,7 @@ namespace StreamLineTestApi.Data.Repository
         public Task<List<User>> GetAll() =>
             _dbSet.AsNoTracking().ToListAsync();
 
-        public async Task<User?> GetByID(int id)
-        {
-            return await _context.Users.FirstOrDefaultAsync(t => t.Id == id);
-        }
+        public Task<User?> GetByID(int id) =>
+            _context.Users.FirstOrDefaultAsync(t => t.Id == id);
     }
 }

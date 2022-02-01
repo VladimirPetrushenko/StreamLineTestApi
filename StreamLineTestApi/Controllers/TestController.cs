@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StreamLineTestApi.Client.Models.Dto.Test;
 using StreamLineTestApi.Data.Repository;
@@ -9,7 +8,6 @@ namespace StreamLineTestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class TestController : Controller
     {
         private readonly IRepository<Test> _repository;
@@ -25,7 +23,6 @@ namespace StreamLineTestApi.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Tests()
         {
             var tests = await _repository.GetAll();
@@ -109,42 +106,6 @@ namespace StreamLineTestApi.Controllers
             var testDto = _mapper.Map<TestReadDto>(test);
 
             return Ok(testDto);
-        }
-
-        [HttpPost]
-        [Route("CheckTest")]
-        public async Task<IActionResult> CheckTest(TestCheckResultDto testCheckResult)
-        {
-            var test = await _repository.GetByID(testCheckResult.Id);
-
-            if (test == null)
-            {
-                return BadRequest();
-            }
-
-            bool[] result = new bool[test.Questions.Count];
-
-            for (int i = 0; i < test.Questions.Count; i++)
-            {
-                if (String.IsNullOrWhiteSpace(testCheckResult.Answers[i]))
-                {
-                    continue;
-                }
-
-                var rightAnswer = test.Questions[i].Answers.FirstOrDefault(a => a.IsRight);
-
-                if (rightAnswer == null)
-                {
-                    continue;
-                }
-
-                if (rightAnswer.Value.Contains(testCheckResult.Answers[i]))
-                {
-                    result[i] = true;
-                }
-            }
-
-            return Json(result);
         }
         
         [HttpDelete("id")]

@@ -51,6 +51,7 @@ builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Test>, TestRepository>();
 builder.Services.AddScoped<IRepository<Question>, QuestionRepository>();
 builder.Services.AddScoped<IRepository<QuestionsAnswer>, QuestionsAnswerRepository>();
+builder.Services.AddScoped<IRepository<TestsResult>, TestsResultRepository>();
 
 builder.Services.AddAutoMapper(typeof(AnswerProfile).GetTypeInfo().Assembly);
 builder.Services.AddCors();

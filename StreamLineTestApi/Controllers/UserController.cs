@@ -27,6 +27,11 @@ namespace StreamLineTestApi.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if (HttpContext.User.Identity == null)
+            {
+                return NotFound();
+            }
+
             var user = HttpContext.User.Identity.Name;
             return Json(user);
         }
