@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StreamLineTestApi.Client.Models.Dto.Users;
@@ -21,11 +22,13 @@ namespace StreamLineTestApi.Controllers
             _repository = repository;
             _mapper = mapper;
         }
-        
+
         [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
-            return Json("Hello world");
+            var user = HttpContext.User.Identity.Name;
+            return Json(user);
         }
 
         [HttpPost]
@@ -40,10 +43,13 @@ namespace StreamLineTestApi.Controllers
                 return BadRequest(new { errorText = "Invalid username or password." });
             }
 
+            var token = GetToken(GetClaimsIdentity(user.Name));
+            HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", token, new CookieOptions
+            {
+                MaxAge = TimeSpan.FromMinutes(AuthOptions.LIFETIME)
+            });
 
             var userReadDto = _mapper.Map<UserReadDto>(user);
-            userReadDto.AccessToken = GetToken(GetClaimsIdentity(user.Name));
-
             return Json(userReadDto);
         }
 
@@ -60,15 +66,28 @@ namespace StreamLineTestApi.Controllers
                 return BadRequest(new { errorText = "Username already exists." });
             }
 
-            var userReadDto = _mapper.Map<UserReadDto>(userModel);
-            userReadDto.AccessToken = GetToken(GetClaimsIdentity(userModel.Name));
+            var token = GetToken(GetClaimsIdentity(userModel.Name));
+            HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", token, new CookieOptions
+            {
+                MaxAge = TimeSpan.FromMinutes(AuthOptions.LIFETIME)
+            });
 
+            var userReadDto = _mapper.Map<UserReadDto>(userModel);
             return Json(userReadDto);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("/logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Application.Id");
+            return Ok();
         }
 
         private static string GetToken(ClaimsIdentity identity)
         {
-            var now = DateTime.UtcNow;
+                var now = DateTime.UtcNow;
 
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,

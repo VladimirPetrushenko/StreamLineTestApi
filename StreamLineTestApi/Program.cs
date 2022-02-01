@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StreamLineTestApi;
 using StreamLineTestApi.Client.Profiles;
 using StreamLineTestApi.Data.Context;
 using StreamLineTestApi.Data.Repository;
 using StreamLineTestApi.Domain.Models;
+using StreamLineTestApi.Middlewares;
 using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,14 @@ builder.Services.AddDbContext<StreamLineDbContext>(options =>
     options.UseSqlServer(config);
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
+        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             // указывает, будет ли валидироваться издатель при валидации токена
@@ -48,7 +54,7 @@ builder.Services.AddScoped<IRepository<QuestionsAnswer>, QuestionsAnswerReposito
 
 builder.Services.AddAutoMapper(typeof(AnswerProfile).GetTypeInfo().Assembly);
 builder.Services.AddCors();
-
+builder.Services.AddTransient<HTTPpipeline>();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -65,26 +71,25 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseCors(options =>
 {
-    options.AllowAnyOrigin();
+    options.WithOrigins("http://localhost:3000")
+    .AllowCredentials();
     options.AllowAnyHeader();
     options.AllowAnyMethod();
 });
 
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+    HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always
+});
+
+app.UseMiddleware<HTTPpipeline>();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
-
-public class AuthOptions
-{
-    public const string ISSUER = "MyAuthServer"; // издатель токена
-    public const string AUDIENCE = "MyAuthClient"; // потребитель токена
-    const string KEY = "mysupersecret_secretkey!123";   // ключ для шифрации
-    public const int LIFETIME = 30;
-    public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
-}

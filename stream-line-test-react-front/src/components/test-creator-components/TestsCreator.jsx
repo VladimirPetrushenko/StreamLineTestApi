@@ -8,7 +8,7 @@ export const TestsCreator = (props) => {
         setName, 
         questions, 
         setQuestions, 
-        isCreate, 
+        isCreating, 
         method 
     } = props;
 
@@ -43,9 +43,9 @@ export const TestsCreator = (props) => {
             questions: questions
         }
 
-        console.log(value);
-
-        method(value).then(data => console.log(data.status));
+        method(value)
+            .then(data => console.log(data.status))
+            .catch(error => console.log(error));
     }
 
     const startPage = (setStart) => {
@@ -90,5 +90,5 @@ export const TestsCreator = (props) => {
         );
     }
 
-    return isCreate ? mainPage() : startPage(setStartPage);
+    return isCreating ? mainPage() : startPage(setStartPage);
 }

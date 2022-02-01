@@ -1,9 +1,12 @@
 import { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
 export const MyContext = (props) => {
     const [answers, setAnswers] = useState([]);
+    const [userName, setUserName] = useState("");
+    const [isAuth, setIsAuth] = useState(false);
 
     const initArrayAnswers = (length) => {
         const result = [];
@@ -11,6 +14,16 @@ export const MyContext = (props) => {
             result.push('');
         }
         setAnswers(result);
+    }
+    
+    const navigate = useNavigate();
+
+    const moveTo = (path) => {
+        navigate(`/${path}`);
+    }
+
+    const moveToLogin = () => {
+        moveTo("login");
     }
 
     const setQuestionAnswer = (index, answer) => {
@@ -21,6 +34,8 @@ export const MyContext = (props) => {
         answers: answers,
         setAnswer: setQuestionAnswer,
         initAnswers: initArrayAnswers,
+        isAuth, setIsAuth, moveTo, moveToLogin,
+        userName, setUserName
     };
 
     return <AppContext.Provider value={value}>

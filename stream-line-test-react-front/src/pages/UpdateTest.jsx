@@ -1,20 +1,22 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
 import { GetUpdateTestById, PutUpdateTest } from "../Api";
 import { TestsCreator } from "../components/test-creator-components/TestsCreator";
 import { Preloader } from "../components/common/Preloader";
+import { AppContext } from "../components/common/Context";
 
 export const UpdateTest = () => {
-    const [isCreate, setIsCreate] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [name, setName] = useState("");
     const { id } = useParams();
+    const { moveToLogin } = useContext(AppContext);
 
     const startUpdate = () => {
         if (name.trim() !== '') {
-            setIsCreate(true);
+            setIsCreating(true);
         }
         else {
             alert("Please, enter test's name");
@@ -26,8 +28,12 @@ export const UpdateTest = () => {
             setName(data.name);
             setQuestions(data.questions);
             setIsLoading(false);
+        })
+        .catch(error => {
+            console.log(error);
+            moveToLogin();
         });
-    }, [id]);
+    }, [id, moveToLogin]);
 
     return (
         isLoading ?
@@ -35,7 +41,7 @@ export const UpdateTest = () => {
             <TestsCreator
                 name={name}
                 setName={setName}
-                isCreate={isCreate}
+                isCreating={isCreating}
                 setStartPage={startUpdate}
                 questions={questions}
                 setQuestions={setQuestions}

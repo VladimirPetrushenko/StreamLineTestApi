@@ -10,7 +10,7 @@ export const Test = () => {
     const [test, setTest] = useState();
     const [results, setResults] = useState([]);
     const [isResult, setIsResult] = useState(false);
-    const { answers } = useContext(AppContext);
+    const { answers, moveToLogin } = useContext(AppContext);
 
     const { id } = useParams();
 
@@ -19,17 +19,23 @@ export const Test = () => {
             id: test.id,
             answers: answers
         }
-        PostCheckTest(requestData).then(data => setResults(data));
+        PostCheckTest(requestData)
+            .then(data =>{ 
+                setResults(data);
+                setIsResult(true);
+            })
+            .catch(error => console.log(error));
 
-        setIsResult(true);
     }
 
     useEffect(() => {
-        GetTestById(id).then(data => {
-            setTest(data);
+        GetTestById(id)
+        .then(data => setTest(data))
+        .catch(error => {
+            moveToLogin();
         });
-    }, [id]);
-
+    }, [id, moveToLogin]);
+    
     return (
         !isResult ?
             (test ? <Questions {...test} submit={handleSubmit} /> : <Preloader />)

@@ -1,10 +1,24 @@
+import { useContext, useEffect } from 'react';
+import { CheckUser } from './Api';
 import './App.css';
+import { AppContext } from './components/common/Context';
 import { Footer } from './components/common/Footer';
 import { Header } from './components/common/Header';
-import { RoutesComponent } from './pages/RoutesComponent';
+import { RoutesComponent } from './pages/simple-page/RoutesComponent';
 
 function App() {
-  
+  const {setIsAuth, setUserName} = useContext(AppContext);
+
+  useEffect(() => {
+    CheckUser().then(data => {
+      setIsAuth(true);
+      setUserName(data);
+    }).catch(error => {
+      setIsAuth(false);
+    });
+  }, [setIsAuth, setUserName])
+
+
   return (
     <div>
       <Header />

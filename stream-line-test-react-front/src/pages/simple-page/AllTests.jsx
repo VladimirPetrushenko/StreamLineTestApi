@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
-import { GetAllTests } from "../Api";
-import { Preloader } from "../components/common/Preloader";
+import { GetAllTests } from "../../Api";
+import { Preloader } from "../../components/common/Preloader";
 
 export const AllTests = ({ link = "tests" }) => {
     const [tests, setTests] = useState([]);

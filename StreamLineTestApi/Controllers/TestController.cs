@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StreamLineTestApi.Client.Models.Dto.Test;
 using StreamLineTestApi.Data.Repository;
@@ -8,6 +9,7 @@ namespace StreamLineTestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class TestController : Controller
     {
         private readonly IRepository<Test> _repository;
@@ -23,6 +25,7 @@ namespace StreamLineTestApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Tests()
         {
             var tests = await _repository.GetAll();
@@ -36,7 +39,6 @@ namespace StreamLineTestApi.Controllers
         public async Task<IActionResult> Test(int Id)
         {
             var test = await _repository.GetByID(Id);
-
             var testDto = _mapper.Map<TestReadDto>(test);
 
             return Ok(testDto);
@@ -68,10 +70,7 @@ namespace StreamLineTestApi.Controllers
                 return BadRequest();
             }
 
-            var test = new Test()
-            {
-                Name = testCreateDto.Name,
-            };
+            var test = new Test() { Name = testCreateDto.Name };
 
             var testEntity = await _repository.CreateItem(test);
             await _repository.SaveChanges();
@@ -88,7 +87,6 @@ namespace StreamLineTestApi.Controllers
         public async Task<IActionResult> UpdateTest(int Id)
         {
             var test = await _repository.GetByID(Id);
-
             var testDto = _mapper.Map<TestUpdateReadDto>(test);
 
             return Ok(testDto);
