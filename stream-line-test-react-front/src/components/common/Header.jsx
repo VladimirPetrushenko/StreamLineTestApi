@@ -18,8 +18,8 @@ export function Header() {
 
     const nickNameAndLogout = () => {
         return <ul className="navbar-nav mr-auto end-0">
-            <li className="nav-item text-light mt-2">
-                {`Hello ${userName}`}
+            <li className="nav-item">
+                <a href="/person" className="nav-link">{`Hello ${userName}`}</a> 
             </li>
             <li className="nav-item">
                 <a href="/logout" className="nav-link">Logout</a>

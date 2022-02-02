@@ -13,7 +13,8 @@ namespace StreamLineTestApi.Client.Profiles
             CreateMap<TestUpdateDto, Test>();
 
             CreateMap<Test, TestReadDto>();
-            CreateMap<Test, TestReadNameAndIDDto>();
+            CreateMap<Test, TestReadNameIDQuestionCountDto>()
+                .ForMember(x=>x.QuestionCount, opt => opt.MapFrom(y => y.Questions.Count));
 
 
             CreateMap<Test, TestUpdateReadDto>();

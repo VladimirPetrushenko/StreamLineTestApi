@@ -22,12 +22,6 @@ export const GetAllQuestions = async () => {
     return response;
 }
 
-export const PostCheckTest = async (request) => {
-    const value = createRequest("POST", request); 
-    const response = await fetch("https://localhost:7053/Result/CheckTest", value).then(checkForError);
-    return response;
-}
-
 export const PostCreateTest = async (request) => {
     const value = createRequest("POST", request); 
     const response = await fetch("https://localhost:7053/Test/Create", value).then(checkForError);
@@ -71,6 +65,18 @@ export const GetLogout = async () => {
 export const CheckUser = async () => {
     const value = createRequest("GET");
     const response = await fetch("https://localhost:7053/user", value).then(checkForError);
+    return response;
+}
+
+export const GetUserResults = async() => {
+    const value = createRequest("GET");
+    const response = await fetch("https://localhost:7053/Result", value).then(checkForError);
+    return response;
+}
+
+export const PostCheckTest = async (request) => {
+    const value = createRequest("POST", request); 
+    const response = await fetch("https://localhost:7053/Result/CheckTest", value).then(checkForError);
     return response;
 }
 

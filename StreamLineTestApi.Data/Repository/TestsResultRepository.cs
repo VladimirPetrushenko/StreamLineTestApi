@@ -18,6 +18,7 @@ namespace StreamLineTestApi.Data.Repository
         public Task<List<TestsResult>> GetAll() =>
             _dbSet.AsNoTracking()
                 .Include(x => x.Test)
+                .ThenInclude(x=>x.Questions)
                 .Include(x => x.User)
                 .ToListAsync();
 

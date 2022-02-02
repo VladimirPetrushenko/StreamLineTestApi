@@ -26,7 +26,7 @@ namespace StreamLineTestApi.Controllers
         public async Task<IActionResult> Tests()
         {
             var tests = await _repository.GetAll();
-            var testsDto = _mapper.Map<List<TestReadNameAndIDDto>>(tests);
+            var testsDto = _mapper.Map<List<TestReadNameIDQuestionCountDto>>(tests);
 
             return Ok(testsDto);
         }

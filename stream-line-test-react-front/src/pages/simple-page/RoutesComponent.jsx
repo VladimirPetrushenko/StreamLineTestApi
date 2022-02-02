@@ -13,6 +13,7 @@ import { TestsConstructor } from '../TestConstructor';
 import { Register } from './Register';
 import { Login } from './Login';
 import { Logout } from './Logout';
+import { Result } from '../Result';
 
 export const RoutesComponent = () => {
     return <Routes>
@@ -26,6 +27,7 @@ export const RoutesComponent = () => {
         <Route path="/random-test" element={<RandomTest />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/person" element={<Result />} />
         <Route path="/login" element={<Login />} />
         <Route path="/Logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
