@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StreamLineTestApi.Client.Models.Dto.Result;
 using StreamLineTestApi.Data.Repository;
 using StreamLineTestApi.Domain.Models;
+using StreamLineTestApi.Helpers;
 
 namespace StreamLineTestApi.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
+    [Authorize]
     public class ResultController : Controller
     {
         private readonly IRepository<Test> _testRepo;
@@ -16,58 +21,69 @@ namespace StreamLineTestApi.Controllers
         public ResultController(
             IRepository<Test> testRepo,
             IMapper mapper,
-            IRepository<User> userRepo)
+            IRepository<User> userRepo, 
+            IRepository<TestsResult> testsResultRepo)
         {
             _testRepo = testRepo;
             _mapper = mapper;
             _userRepo = userRepo;
+            _testsResultRepo = testsResultRepo;
         }
 
         [HttpPost]
         [Route("CheckTest")]
         public async Task<IActionResult> CheckTest(ResultCreateDto resultRead)
         {
-            var test = await _testRepo.GetByID(resultRead.Id);
-            var userNoTracking = (await _userRepo.GetAll()).Where(u => u.Name == resultRead.UserName).FirstOrDefault();
+            var test = await _testRepo.GetByID(resultRead.TestId);
+            var userNoTracking = await GetCurrentUser();
 
             if (test == null || userNoTracking == null)
             {
                 return BadRequest();
             }
 
-            var user = await _userRepo.GetByID(userNoTracking.Id);
-            bool[] result = new bool[test.Questions.Count];
+            var testValidator = new TestValidator(test.Questions, resultRead.Answers);
 
-            for (int i = 0; i < test.Questions.Count; i++)
+            //var testsResult = new TestsResult()
+            //{
+            //    Test = test,
+            //    User = await _userRepo.GetByID(userNoTracking.Id) ?? (await _userRepo.GetAll()).First(),
+            //    Result = testValidator.Check(),
+            //};
+
+            //await _testsResultRepo.CreateItem(testsResult);
+            //await _testsResultRepo.SaveChanges();
+            testValidator.Check();
+            return Json(testValidator.GetResult());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Results()
+        {
+            var user = await GetCurrentUser();
+
+            if(user == null)
             {
-                if (String.IsNullOrWhiteSpace(resultRead.Answers[i]))
-                {
-                    continue;
-                }
-
-                var rightAnswer = test.Questions[i].Answers.FirstOrDefault(a => a.IsRight);
-
-                if (rightAnswer == null)
-                {
-                    continue;
-                }
-
-                if (rightAnswer.Value.Contains(resultRead.Answers[i]))
-                {
-                    result[i] = true;
-                }
+                return NotFound();
             }
 
-            var testsResult = new TestsResult();
-            testsResult.Test = test;
-            testsResult.User = user;
+            var results = (await _testsResultRepo.GetAll()).Where(x => x.User.Id == user.Id);
+            var resultReadDto = _mapper.Map<List<ResultReadDto>>(results);
 
-            testsResult.Result = result.Where(r => r == true).Count() * 1.0 / result.Count();
+            return Json(resultReadDto);
+        }
 
-            await _testsResultRepo.CreateItem(testsResult);
-            await _testsResultRepo.SaveChanges();
+        private async Task<User?> GetCurrentUser()
+        {
+            if (HttpContext.User.Identity == null)
+            {
+                throw new Exception();
+            }
 
-            return Json(result);
+            var userName = HttpContext.User.Identity.Name;
+            var userNoTracking = (await _userRepo.GetAll()).Where(u => u.Name == userName).FirstOrDefault();
+
+            return userNoTracking;
         }
     }
 }

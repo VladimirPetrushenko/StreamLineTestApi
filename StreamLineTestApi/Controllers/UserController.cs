@@ -66,11 +66,6 @@ namespace StreamLineTestApi.Controllers
             
             await _repository.CreateItem(userModel);
             
-            if (!(await _repository.SaveChanges()))
-            {
-                return BadRequest(new { errorText = "Username already exists." });
-            }
-
             var token = GetToken(GetClaimsIdentity(userModel.Name));
             HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", token, new CookieOptions
             {

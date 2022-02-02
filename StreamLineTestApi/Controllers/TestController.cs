@@ -53,7 +53,6 @@ namespace StreamLineTestApi.Controllers
             var test = _mapper.Map<Test>(testCreateDto);
 
             await _repository.CreateItem(test);
-            await _repository.SaveChanges();
 
             return Ok();
         }
@@ -70,12 +69,12 @@ namespace StreamLineTestApi.Controllers
             var test = new Test() { Name = testCreateDto.Name };
 
             var testEntity = await _repository.CreateItem(test);
-            await _repository.SaveChanges();
 
             test = await _repository.GetByID(testEntity.Id);
 
             _mapper.Map(testCreateDto, test);
-            await _repository.SaveChanges();
+
+            await _repository.UpdateItem(test);
 
             return Ok();
         }
@@ -101,7 +100,7 @@ namespace StreamLineTestApi.Controllers
 
             _mapper.Map(testUpdate, test);
 
-            await _repository.SaveChanges();
+            await _repository.UpdateItem(test);
 
             var testDto = _mapper.Map<TestReadDto>(test);
 
@@ -119,7 +118,6 @@ namespace StreamLineTestApi.Controllers
             }
 
             await _repository.DeleteItem(test);
-            await _repository.SaveChanges();
             
             return Ok();
         }

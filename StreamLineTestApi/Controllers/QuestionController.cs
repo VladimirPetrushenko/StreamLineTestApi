@@ -25,7 +25,6 @@ namespace StreamLineTestApi.Controllers
             var question = _mapper.Map<Question>(questionCreateDto);
 
             await _repository.CreateItem(question);
-            await _repository.SaveChanges();
 
             return Ok();
         }
@@ -50,7 +49,6 @@ namespace StreamLineTestApi.Controllers
             }
 
             await _repository.DeleteItem(question);
-            await _repository.SaveChanges();
 
             return Ok();
         }

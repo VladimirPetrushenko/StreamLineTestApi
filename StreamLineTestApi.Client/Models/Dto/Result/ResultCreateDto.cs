@@ -2,8 +2,7 @@
 {
     public class ResultCreateDto
     {
-        public int Id { get; set; }
+        public int TestId { get; set; }
         public List<string> Answers { get; set; }
-        public string UserName { get; set; }
     }
 }

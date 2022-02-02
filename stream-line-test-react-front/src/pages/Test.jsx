@@ -16,7 +16,7 @@ export const Test = () => {
 
     const handleSubmit = () => {
         const requestData = {
-            id: test.id,
+            testId: test.id,
             answers: answers
         }
         PostCheckTest(requestData)

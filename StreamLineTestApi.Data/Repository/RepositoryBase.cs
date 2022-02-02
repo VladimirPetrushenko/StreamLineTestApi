@@ -18,19 +18,19 @@ namespace StreamLineTestApi.Data.Repository
         public async Task<TEntity> CreateItem(TEntity item)
         {
             var model = await _dbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
             return model.Entity;
         }
 
-        public Task DeleteItem(TEntity item)
+        public async Task DeleteItem(TEntity item)
         {
             _dbSet.Remove(item);
-            return Task.CompletedTask;
+            await _context.SaveChangesAsync();
         }
 
-        public Task UpdateItem(TEntity item)
+        public async Task UpdateItem(TEntity item)
         {
-            _context.Entry(item).State = EntityState.Modified;
-            return Task.CompletedTask;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> SaveChanges() =>

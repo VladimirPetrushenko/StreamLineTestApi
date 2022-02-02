@@ -24,7 +24,7 @@ export const GetAllQuestions = async () => {
 
 export const PostCheckTest = async (request) => {
     const value = createRequest("POST", request); 
-    const response = await fetch("https://localhost:7053/Test/CheckTest", value).then(checkForError);
+    const response = await fetch("https://localhost:7053/Result/CheckTest", value).then(checkForError);
     return response;
 }
 
