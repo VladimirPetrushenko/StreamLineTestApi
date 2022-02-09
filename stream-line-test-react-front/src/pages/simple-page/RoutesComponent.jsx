@@ -32,5 +32,5 @@ export const RoutesComponent = () => {
         <Route path="/Logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
-    </Routes>;
+    </Routes>
 }

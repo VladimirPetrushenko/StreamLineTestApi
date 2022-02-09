@@ -24,14 +24,14 @@ export const GetAllQuestions = async () => {
 
 export const PostCreateTest = async (request) => {
     const value = createRequest("POST", request); 
-    const response = await fetch("https://localhost:7053/Test/Create", value).then(checkForError);
-    return response;
+    const response = await fetch("https://localhost:7053/Test/Create", value);
+    return await response;
 }
 
 export const PostCreateTestWithConstructor = async (request) => {
     const value = createRequest("POST", request); 
-    const response = await fetch("https://localhost:7053/Test/CreateWithConstructor", value).then(checkForError);
-    return response;
+    const response = await fetch("https://localhost:7053/Test/CreateWithConstructor", value);
+    return await response;
 }
 
 export const PutUpdateTest = async (id, request) => {

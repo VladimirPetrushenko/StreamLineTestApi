@@ -23,17 +23,18 @@ export const TestsConstructor = () => {
             name: name,
             questions: questions.filter((q, i) => checkbox[i])
         }
+
         PostCreateTestWithConstructor(result)
             .then(data => {
                 setIsLoading(true);
-                setTimeout(() => moveTo("/tests"), 300);
+                setTimeout(() => moveTo("tests"), 300);
             })
             .catch(error => console.log(error));
     }
 
     const startPage = (setStart) => {
         return (
-            <div className="text-center pt-5">
+            <div className="text-center pt-3">
                 <div className="mb-3">
                     <input
                         type="text"
@@ -62,21 +63,56 @@ export const TestsConstructor = () => {
             .catch(error => console.log(error));
     }, []);
 
-    return !isCreating ? startPage() :
-        (
-            isLoading ? <Preloader /> :
-                (
-                    <div>
-                        {questions && questions.map((question, index) => {
-                            return (<div key={question.id}>
-                                {question.value} {question.id}
-                                <input type="checkbox" name={index} id={index} checked={checkbox[index]} onChange={handleChange} />
-                            </div>);
-                        })}
-                        <button className="btn btn-primary m-2" onClick={submit}>Submit</button>
-                    </div>
-                )
-        );
+    const tableCell = (questions) => {
+        const rows = [];
+        
+        const cells = questions.map((question, index) => {
+            return (<>
+                    <td className="text-center">{index + 1}</td>
+                    <td className="ps-2">{question.value}</td>
+                    <td className="text-center"><input className="col-3" type="checkbox" name={index} id={index} checked={checkbox[index]} onChange={handleChange} /></td>
+                </>
+            );
+        });
+        
+        for(let i = 0; i < cells.length; i+= 2){
+            const element = <tr key={i}>{cells[i]}{cells[i+1]}</tr>;
+
+            rows.push(element);
+        }
+       
+        return rows;
+    }
+
+    return <> 
+        <div className="text-center fs-1 fw-bold">Test constructor</div>
+        {
+            !isCreating ? startPage() :
+            (
+                isLoading ? <Preloader /> :
+                    (
+                        <>
+                            <table className="w-100 table-bordered border-success">
+                                <thead className="text-center">
+                                    <tr>
+                                        <th scope="col" className="ps-3 pe-3">#</th>
+                                        <th scope="col">Questions</th>
+                                        <th scope="col" className="p-2">Choice</th>
+                                        <th scope="col" className="ps-3 pe-3">#</th>
+                                        <th scope="col">Questions</th>
+                                        <th scope="col" className="p-2">Choice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {questions && tableCell(questions)}
+                                </tbody>
+                            </table>
+                            <button className="btn btn-primary m-2" onClick={submit}>Submit</button>
+                        </>
+                    )
+            )
+        }
+        </>
 }
 
 function fill(setCheckbox, length) {

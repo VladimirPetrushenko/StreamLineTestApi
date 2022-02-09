@@ -30,7 +30,7 @@ export const Questions = ({ questions, submit }) => {
     }
 
     useEffect(()=>{
-        initAnswers(questions.length)
+        initAnswers(questions.length);
     }, [questions.length])
 
     return questions.length && (
@@ -78,5 +78,5 @@ export const Questions = ({ questions, submit }) => {
                 </div>
             </div>
         </div>
-    )
+    );
 }

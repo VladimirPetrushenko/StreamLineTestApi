@@ -50,7 +50,7 @@ export const QuestionsCreator = ({id, setQuestion, question, qIndex, removeQuest
             type: question.type
         }
 
-        setQuestion(qIndex, value)
+        setQuestion(qIndex, value);
     }
 
     const handleQuestionInput = (event) => {
@@ -64,10 +64,20 @@ export const QuestionsCreator = ({id, setQuestion, question, qIndex, removeQuest
     return (
         <div>
             <div>Enter your question</div>
-            <div>
-                <input type="text" placeholder="Enter your question" name="Question" id="" onChange={handleQuestionInput} value={question.value} />
+            <div className="row g-2">
+                <div className="col-11">
+                    <input 
+                        type="text" 
+                        placeholder="Enter your question" 
+                        name="Question" id="" 
+                        onChange={handleQuestionInput} 
+                        value={question.value} 
+                        className="form-control"
+                    />
+                </div>
+                <button className="btn btn-danger col-1" onClick={removeQuestion}><i class="bi bi-x-circle"></i></button>
             </div>
-            <div>
+            <div className="row">
                 {answers.map((answer, index) => {
                     return (
                         <AnswersCreator
@@ -81,10 +91,9 @@ export const QuestionsCreator = ({id, setQuestion, question, qIndex, removeQuest
                         />
                     )
                 })}
-            </div>
-            <div>
-                <button className="btn btn-primary me-3" onClick={addAnswer}>Add Answer</button>
-                <button className="btn btn-primary" onClick={removeQuestion}>Remove question</button>
+                <div className="col-3 mt-2">
+                    <button className="btn btn-success" onClick={addAnswer}><i class="bi bi-plus-circle"></i></button>
+                </div>
             </div>
         </div>
     );

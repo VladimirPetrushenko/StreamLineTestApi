@@ -14,17 +14,32 @@ export const AnswersCreator = ({id, answer, setIsRight, isRight, aIndex, setAnsw
         setIsRight(aIndex);
     }
 
-    return(
-        <>
-            <input type="text" placeholder="Enter your answer" className="me-1 mt-2 mb-2" onChange = {handleChangeAnswer} value={answer}/>
-            <input 
-                type="radio" 
-                name={inputName} 
-                className="me-1"
-                onChange={handleChangeIsRight} 
-                checked = {isRight}
-            />
-            <button onClick={removeAnswer} className="p-1 mb-1 btn btn-danger me-4">X</button>
-        </>
-    )
+    return (
+        <div className="mt-2 col-4 row">
+            <div className="col-9">
+                <input 
+                    type="text" 
+                    placeholder="Enter your answer" 
+                    className="form-control" 
+                    onChange = {handleChangeAnswer} 
+                    value={answer}
+                />
+            </div>
+            <div className="col-1 mt-2 form-check">
+                <input 
+                    type="radio" 
+                    name={inputName} 
+                    className="form-check-input"
+                    onChange={handleChangeIsRight} 
+                    checked = {isRight}
+                />
+            </div>
+            <button 
+                className="btn btn-danger p-1 col-1"
+                onClick={removeAnswer} 
+            >
+                <i class="bi bi-dash-circle"></i>
+            </button>
+        </div>
+    );
 }

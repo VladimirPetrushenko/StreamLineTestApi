@@ -28,7 +28,7 @@ export const Result = () => {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <table class="table table-warning table-hover table-striped text-center">
+                    <table className="table table-warning table-hover table-striped text-center">
                         <thead>
                             <tr>
                                 <th>Test Name</th>
@@ -57,5 +57,5 @@ export const Result = () => {
                 </div>
             </div>
         </>
-    )
+    );
 }

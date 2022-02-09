@@ -20,7 +20,7 @@ export const Answer = ({ inputName, value, indexQuestion }) => {
             />
             {answer === "" ? "Without anything" : answer}
         </label>
-    )
+    );
 }
 
 function makeFirstLetterUpperCase(sourceString) {

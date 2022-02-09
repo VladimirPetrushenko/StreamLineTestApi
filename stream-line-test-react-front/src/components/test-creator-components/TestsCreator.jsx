@@ -1,16 +1,20 @@
+import { useContext } from "react";
+import { AppContext } from "../common/Context";
 import { EMPTYQUESTION } from "../constants/constant";
 import { QuestionsCreator } from "./QuestionsCreator";
 
 export const TestsCreator = (props) => {
-    const { 
-        setStartPage, 
-        name, 
-        setName, 
-        questions, 
-        setQuestions, 
-        isCreating, 
-        method 
+    const {
+        setStartPage,
+        name,
+        setName,
+        questions,
+        setQuestions,
+        isCreating,
+        method
     } = props;
+
+    const { moveTo } = useContext(AppContext)
 
     const addQuestion = () => {
         commonSet(a => a.push(EMPTYQUESTION()));
@@ -44,13 +48,16 @@ export const TestsCreator = (props) => {
         }
 
         method(value)
-            .then(data => console.log(data.status))
+            .then(data => {
+                console.log(data.status);
+                moveTo("tests");
+            })
             .catch(error => console.log(error));
     }
 
     const startPage = (setStart) => {
         return (
-            <div className="text-center pt-5">
+            <div className="text-center pt-3">
                 <div className="mb-3">
                     <input
                         type="text"

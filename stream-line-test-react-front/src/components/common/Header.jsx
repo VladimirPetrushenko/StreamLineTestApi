@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AppContext } from "./Context";
 
 export function Header() {
-    const { isAuth, userName } = useContext(AppContext)
+    const { isAuth, userName } = useContext(AppContext);
 
     const loginAndRegister = () => {
         return <ul className="navbar-nav mr-auto end-0">

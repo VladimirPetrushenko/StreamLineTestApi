@@ -9,11 +9,16 @@ export const RandomTest = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        GetAllTests().then(data => setTests(data))
+        GetAllTests()
+            .then(data => {
+                setTests(data);
+            });
     }, []);
 
     if (tests.length) {
-        setTimeout(() => navigate(`/tests/${tests[Math.floor(Math.random() * tests.length)].id}`), 200);
+        setTimeout(() => {
+            navigate(`/tests/${tests[Math.floor(Math.random() * tests.length)].id}`);
+        }, 200);
     }
 
     return <Preloader />;

@@ -11,7 +11,7 @@ export const CreateTest = () => {
     const startCreate = () => {
         if (name.trim() !== '') {
             setIsCreating(true);
-            let a = [EMPTYQUESTION()];
+            let a = [EMPTYQUESTION()]; 
             setQuestions(a);
         }
         else {
@@ -20,14 +20,17 @@ export const CreateTest = () => {
     }
 
     return (
-        <TestsCreator
-            name={name}
-            setName={setName}
-            isCreating={isCreating}
-            setStartPage={startCreate}
-            questions={questions}
-            setQuestions={setQuestions}
-            method={PostCreateTest}
-        />
+        <>
+            <div className="text-center fs-1 fw-bold">Create test</div>
+            <TestsCreator
+                name={name}
+                setName={setName}
+                isCreating={isCreating}
+                setStartPage={startCreate}
+                questions={questions}
+                setQuestions={setQuestions}
+                method={PostCreateTest}
+            />
+        </>
     );
 }

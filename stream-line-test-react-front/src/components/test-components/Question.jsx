@@ -12,5 +12,5 @@ export const Question = (props) => {
                 <Answers questionId={id} {...props} />
             </div>
         </>
-    )
+    );
 }

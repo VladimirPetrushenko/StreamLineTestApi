@@ -1,6 +1,6 @@
 export const TestResult = ({test, answers, results}) => {
     const result = compilationOfTheResult(test, answers, results);
-    console.log(result);
+    
     return (
         <div className="pt-3 text-center pb-2">
             <h1 className="mb-4">
@@ -21,7 +21,7 @@ export const TestResult = ({test, answers, results}) => {
                 )
             })}
         </div>
-    )
+    );
 }
 
 function compilationOfTheResult(test, answer, results){

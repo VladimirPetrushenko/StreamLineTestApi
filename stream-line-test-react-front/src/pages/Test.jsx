@@ -19,13 +19,13 @@ export const Test = () => {
             testId: test.id,
             answers: answers
         }
+        
         PostCheckTest(requestData)
             .then(data =>{ 
                 setResults(data);
                 setIsResult(true);
             })
             .catch(error => console.log(error));
-
     }
 
     useEffect(() => {

@@ -30,7 +30,6 @@ export const UpdateTest = () => {
             setIsLoading(false);
         })
         .catch(error => {
-            console.log(error);
             moveToLogin();
         });
     }, [id, moveToLogin]);
@@ -38,14 +37,17 @@ export const UpdateTest = () => {
     return (
         isLoading ?
             <Preloader /> :
-            <TestsCreator
-                name={name}
-                setName={setName}
-                isCreating={isCreating}
-                setStartPage={startUpdate}
-                questions={questions}
-                setQuestions={setQuestions}
-                method={PutUpdateTest}
-            />
+            (<>
+                <div className="text-center fs-1 fw-bold">Create test</div>
+                <TestsCreator
+                    name={name}
+                    setName={setName}
+                    isCreating={isCreating}
+                    setStartPage={startUpdate}
+                    questions={questions}
+                    setQuestions={setQuestions}
+                    method={PutUpdateTest}
+                />
+            </>)
     );
 }

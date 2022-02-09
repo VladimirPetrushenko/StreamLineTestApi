@@ -51,7 +51,6 @@ namespace StreamLineTestApi.Controllers
             }
 
             var test = _mapper.Map<Test>(testCreateDto);
-
             await _repository.CreateItem(test);
 
             return Ok();

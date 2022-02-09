@@ -9,5 +9,5 @@ export const Button = (props) => {
         >
             {value}
         </button>
-    )
+    );
 }

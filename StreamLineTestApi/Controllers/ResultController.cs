@@ -44,7 +44,7 @@ namespace StreamLineTestApi.Controllers
 
             var testValidator = new TestValidator(test.Questions, resultRead.Answers);
 
-            if(await ExistTest(user, test.Id))
+            if(await ExistTestsResult(user, test.Id))
             {
                 await UpdateTestsResultIfResultGreaterPrevious(test, user, testValidator);
             }
@@ -120,7 +120,7 @@ namespace StreamLineTestApi.Controllers
         private async Task<IEnumerable<TestsResult>> GetUserResults(User user) =>
             (await _testsResultRepo.GetAll()).Where(x => x.User.Id == user.Id);
 
-        private async Task<bool> ExistTest(User user, int testId)
+        private async Task<bool> ExistTestsResult(User user, int testId)
         {
             var results = await GetUserResults(user);
 

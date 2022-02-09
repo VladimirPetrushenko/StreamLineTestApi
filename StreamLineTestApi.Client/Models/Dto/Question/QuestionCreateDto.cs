@@ -6,7 +6,6 @@ namespace StreamLineTestApi.Client.Models.Dto.Question
 {
     public class QuestionCreateDto
     {
-        public int? Id { get; set; }
         [Required]
         public string Value { get; set; }
         public List<AnswerCreateDto> Answers { get; set; }
